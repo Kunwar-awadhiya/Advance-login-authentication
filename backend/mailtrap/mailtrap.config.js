@@ -43,7 +43,7 @@ export const sender = {
   name : "kunwar ",
 };
 
-*/
+
 
 
 import { MailtrapClient as MTClient } from "mailtrap";
@@ -59,4 +59,23 @@ export const mailtrapClient = new MTClient({ token: process.env.MAILTRAP_TOKEN }
 export const sender = {
   email: "keven3605y@gmail.com",
   name: "Kunwar",
+};
+
+
+*/
+
+
+import { MailtrapClient } from "mailtrap";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const mailtrapClient = new MailtrapClient({
+	endpoint: process.env.MAILTRAP_ENDPOINT,
+	token: process.env.MAILTRAP_TOKEN,
+});
+
+export const sender = {
+	email: "mailtrap@demomailtrap.com",
+	name: "Keven",
 };

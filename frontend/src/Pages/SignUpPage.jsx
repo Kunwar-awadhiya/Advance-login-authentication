@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Input from "../components/Input";
-import {Lock, Mail, User} from "lucide-react"
-import { Link } from 'react-router-dom';
+import {Loader, Lock, Mail, User} from "lucide-react"
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+import { useAuthStore } from "../store/authStore";
 
 
 const SignUpPage = () => {
@@ -11,10 +13,20 @@ const SignUpPage = () => {
     const [name , setName] = useState('');
     const [email , setEmail] = useState('');
     const [password , setPassword] = useState('');
+    const { signUp,error , isLoading } = useAuthStore();
+    const navigate = useNavigate();
 
 
-  const handleSignup = (e) => {
+  const handleSignup = async(e) => {
     e.preventDefault();
+
+    try {
+      await signUp(email , password , name);
+      navigate("/verify-email");
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
   return (
     <motion.div
@@ -40,6 +52,7 @@ const SignUpPage = () => {
                icon={Mail}
                type="email"
                placeholder = "Email Address"
+               autoComplete="username" 
                value = {email}
                onChange={(e) => setEmail(e.target.value)}
             />
@@ -47,18 +60,22 @@ const SignUpPage = () => {
                icon={Lock}
                type="password"
                placeholder = "Password"
+               autoComplete="current-password"  // <-- corrected spelling
                value = {password}
                onChange={(e) => setPassword(e.target.value)}
             />
+            {error && <p className="text-red-500 font-semibold mt-2" >{error}</p>}
              <PasswordStrengthMeter password = {password}/>
 
             <motion.button
                className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-r-lg hover:from-green-600
                hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200"
+               
                whileHover={{scale:0.98}}
                type='submit'
+               disabled = {isLoading}
             >
-                Sign Up
+                {isLoading ? <Loader className="animate-spin mx-auto" size={24}/> : "sign Up"}
             </motion.button>
         </form>
       </div>
