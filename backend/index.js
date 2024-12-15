@@ -34,7 +34,6 @@ app.listen(PORT, () => {
     
 });
 */
-
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -70,5 +69,3 @@ app.listen(PORT, () => {
 	connectDB();
 	console.log("Server is running on port: ", PORT);
 });
-
-
